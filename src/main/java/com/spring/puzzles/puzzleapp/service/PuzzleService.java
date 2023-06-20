@@ -31,7 +31,7 @@ public class PuzzleService {
         image = ImageIO.read(file);
     }
 
-    public BufferedImage[] split(int rows, int cols) throws IOException {
+    public BufferedImage[] split(int rows, int cols) {
         int puzzleWidth = image.getWidth() / cols;
         int puzzleHeight = image.getHeight() / rows;
         int count = 0;
