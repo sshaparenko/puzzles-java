@@ -17,7 +17,7 @@ import java.util.Map;
 @Data
 public class PuzzleService {
     private BufferedImage image;
-    private String dirPath = "src/test/resources/images/";
+    private String dirPath = "src/test/resources/static/images/";
 
     public void saveImage(MultipartFile image) throws IOException {
         InputStream stream = image.getInputStream();
@@ -51,7 +51,7 @@ public class PuzzleService {
         BufferedImage[] puzzles = split(rows, cols);
         Map<Integer, String> puzzleMap = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
-        String filePath = "src/main/resources/images/puzzles/" + filename.split("\\.")[0];
+        String filePath = dirPath + "puzzles/" + filename.split("\\.")[0];
 
         File dir = new File(filePath);
         if (!dir.exists()) dir.mkdir();

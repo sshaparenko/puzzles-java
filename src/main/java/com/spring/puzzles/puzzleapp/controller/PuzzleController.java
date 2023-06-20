@@ -27,7 +27,7 @@ public class PuzzleController {
     @GetMapping("/puzzle")
     public ResponseEntity<ApiResponse> getPuzzle (@RequestParam Integer rows, @RequestParam Integer columns, @RequestParam String filename) {
         try {
-            puzzleService.setImage("src/main/resources/images/" + filename);
+            puzzleService.setImage("src/main/resources/static/images/" + filename);
             String json = puzzleService.savePuzzles(rows, columns, filename);
             System.out.println(json);
             return new ResponseEntity<>(new ApiResponse(true, json), HttpStatus.OK);
