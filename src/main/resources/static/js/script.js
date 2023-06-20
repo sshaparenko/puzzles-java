@@ -122,12 +122,18 @@ function check() {
     if(puzzles[i] !== solved[i]) {
       message.innerText = "You are wrong :(";
       message.style.color = "red";
-      document.getElementById("turns").append(message);
+      message.id = "congrats";
+      if (document.getElementById("congrats") === null) {
+        document.getElementById("turns").append(message);
+      }
       return false;
     } else {
       message.innerText = "Congrats!";
       message.style.color = "green";
-      document.getElementById("turns").append(message);
+      message.id = "congrats";
+      if (document.getElementById("congrats") === null) {
+        document.getElementById("turns").append(message);
+      }
       return true;
     }
   }
