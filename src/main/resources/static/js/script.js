@@ -36,12 +36,10 @@ window.onload = function() {
     pieces[j] = tmp;
   }
 
-  let count = 0;
   for(let i = 0; i < pieces.length; i++) {
     let tile = document.createElement("img");
     tile.src = `./images/puzzles/5458efac19a676b73986c953c6aba8ae/${pieces[i]}.jpg`;
-    tile.id = count;
-    count++;
+    tile.id = pieces[i];
 
     tile.addEventListener("dragstart", dragStart);
     tile.addEventListener("dragover", dragOver);
@@ -79,9 +77,13 @@ function dragDrop() {
   otherTile = this;
 }
 
+//bag: with swapping two puzzles, the ids should not be changed!
 function dragEnd() {
   if (currTile.src.includes("blank")) {
     return;
+  }
+  if (currTile.id !== null && otherTile.id !== null) {
+
   }
   let currImg = currTile.src;
   let otherImg = otherTile.src;
