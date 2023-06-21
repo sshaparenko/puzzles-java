@@ -51,7 +51,6 @@ window.onload = function() {
     document.getElementById("pieces").append(tile);
   }
 
-  let piecesElement = document.getElementById("pieces");
   let boardElement = document.getElementById("board");
   boardElement.style.width = `${80 * columns}px`;
   boardElement.style.height = `${80 * rows}px`;
@@ -82,9 +81,6 @@ function dragEnd() {
   if (currTile.src.includes("blank")) {
     return;
   }
-  if (currTile.id !== null && otherTile.id !== null) {
-
-  }
   let currImg = currTile.src;
   let otherImg = otherTile.src;
   let currId = currTile.id;
@@ -101,7 +97,7 @@ function dragEnd() {
 
 function check() {
   let board = document.getElementById("board"), child;
-  let message = document.createElement("h2");
+  
   const puzzles = [];
   const solved = [];
   for(let i = 0; i < rows*columns; i++) {
@@ -118,23 +114,39 @@ function check() {
   console.log(solved);
   console.log(puzzles);
 
+  compare(puzzles, solved);
+}
+
+
+/**
+ * 
+ * @param {Array} puzzles - array of puzzles indexes
+ * @param {Array} solved - array of answer indexes
+ */
+function compare(puzzles, solved) {
+  let isSolved = true;
+  let message = document.createElement("h2");
+
   for(let i = 0; i < puzzles.length; i++) {
     if(puzzles[i] !== solved[i]) {
-      message.innerText = "You are wrong :(";
-      message.style.color = "red";
-      message.id = "congrats";
-      if (document.getElementById("congrats") === null) {
-        document.getElementById("turns").append(message);
-      }
-      return false;
-    } else {
-      message.innerText = "Congrats!";
-      message.style.color = "green";
-      message.id = "congrats";
-      if (document.getElementById("congrats") === null) {
-        document.getElementById("turns").append(message);
-      }
-      return true;
+      isSolved = false;
+      break;
     }
+  }
+
+  if (isSolved === false) {
+    message.innerText = "You are wrong :(";
+    message.style.color = "red";
+    message.id = "congrats";
+    if (document.getElementById("congrats") === null) {
+      document.getElementById("turns").append(message);
+    }
+    return;
+  }
+  message.innerText = "Congrats!";
+  message.style.color = "green";
+  message.id = "congrats";
+  if (document.getElementById("congrats") === null) {
+    document.getElementById("turns").append(message);
   }
 }
