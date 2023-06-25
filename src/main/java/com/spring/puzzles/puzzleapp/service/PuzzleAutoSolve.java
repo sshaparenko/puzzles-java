@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -42,7 +42,7 @@ public class PuzzleAutoSolve {
     public InputStream solve(String originalImageName) throws IOException {
         log.info("Solving process has started...");
 
-        List<BufferedImage> filesList = getFiles("src/main/resources/static/images/puzzles/" + originalImageName.split("\\.")[0]);
+        LinkedList<BufferedImage> filesList = getFiles("src/main/resources/static/images/puzzles/" + originalImageName.split("\\.")[0]);
 
         if (filesList.size() == 0) {
             log.warn("No files were found! Try to generate them on /api/v1/puzzle");
@@ -58,14 +58,15 @@ public class PuzzleAutoSolve {
         int columns = originalImage.getWidth() / puzzleWidth;
 
         Map<Integer, BufferedImage> resultMap = new HashMap<>();
-
-        for (BufferedImage image : filesList) {
+        Iterator<BufferedImage> iterator = filesList.iterator();
+        while(iterator.hasNext()) {
             int count = 0;
             int min_count = 0;
             double min_differance = 100.0;
+            BufferedImage puzzle = iterator.next();
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    BufferedImage imageToCompare = createImageToCompare(image, originalImage.getWidth(), originalImage.getHeight(), j, i);
+                    BufferedImage imageToCompare = createImageToCompare(puzzle, originalImage.getWidth(), originalImage.getHeight(), j, i);
                     double current_differance = getDifference(imageToCompare, originalImage);
                     if (min_differance > current_differance) {
                         min_differance = current_differance;
@@ -74,8 +75,10 @@ public class PuzzleAutoSolve {
                     count++;
                 }
             }
-            resultMap.put(min_count, image);
+            resultMap.put(min_count, puzzle);
+            iterator.remove();
         }
+
         BufferedImage resultImage = createImage(originalImage.getWidth(), originalImage.getHeight(), resultMap);
         //saveImage(resultImage);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -165,13 +168,13 @@ public class PuzzleAutoSolve {
      * @param dirPath path do the directory, where all the puzzles stored
      * @return list of puzzles of type BufferedImage
      */
-    public List<BufferedImage> getFiles(String dirPath) {
+    private LinkedList<BufferedImage> getFiles(String dirPath) {
         log.info("Starting the read of files...");
         File dir = new File(dirPath);
 
         File[] files = dir.listFiles();
         if (files != null) {
-            List<BufferedImage> resultList = Arrays.stream(files).map(file -> {
+            LinkedList<BufferedImage> resultList = Arrays.stream(files).map(file -> {
                 try {
                     return ImageIO.read(file);
                 } catch (IOException e) {
@@ -179,12 +182,12 @@ public class PuzzleAutoSolve {
                     log.error("There is an exception while reading files!");
                     return null;
                 }
-            }).toList();
+            }).collect(Collectors.toCollection(LinkedList::new));
             log.info("Files were read successfully");
             return resultList;
         }
         log.info("Files was not read successfully!");
-        return new ArrayList<>();
+        return new LinkedList<>();
     }
 
     /**
