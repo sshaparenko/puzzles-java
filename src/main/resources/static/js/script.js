@@ -6,7 +6,26 @@ var otherTile;
 
 var turns = 0;
 
-window.onload = function() {
+// window.onload = loadBoard();
+window.onload = loadPuzzle();
+
+function loadBoard() {
+  fillBoard();
+  let pieces = generateTiles();
+  fillTiles(pieces);
+
+  let boardElement = document.getElementById("board");
+  boardElement.style.width = `${80 * columns}px`;
+  boardElement.style.height = `${80 * rows}px`;
+}
+
+function fillBoard() {
+  let whiteBoard = document.getElementById("board");
+
+  while (whiteBoard.firstChild) {
+    whiteBoard.removeChild(whiteBoard.lastChild);
+  }
+
   for (let i = 0; i < rows; i ++) {
     for (let j = 0; j < columns; j++) {
       let tile = document.createElement("img");
@@ -19,10 +38,12 @@ window.onload = function() {
       tile.addEventListener("drop", dragDrop);
       tile.addEventListener("dragend", dragEnd);
 
-      document.getElementById("board").append(tile);
+      whiteBoard.append(tile);
     }
   }
+}
 
+function generateTiles() {
   let pieces = [];
   for(let i = 0; i <= rows*columns-1; i++) {
     pieces.push(i.toString());
@@ -35,10 +56,25 @@ window.onload = function() {
     pieces[i] = pieces[j];
     pieces[j] = tmp;
   }
+  return pieces;
+}
 
+/**
+ * 
+ * @param {Array} pieces 
+ */
+function fillTiles(pieces) {
+  let tilesBoard = document.getElementById("pieces");
+
+  while (tilesBoard.firstChild) {
+    tilesBoard.removeChild(tilesBoard.lastChild);
+  }
+  
   for(let i = 0; i < pieces.length; i++) {
+    setTimeout(3);
     let tile = document.createElement("img");
-    tile.src = `./images/puzzles/5458efac19a676b73986c953c6aba8ae/${pieces[i]}.jpg`;
+    let dirName = lastImageName.split('.')[0];
+    tile.src = `./images/puzzles/${dirName}/${pieces[i]}.png`;
     tile.id = pieces[i];
 
     tile.addEventListener("dragstart", dragStart);
@@ -48,22 +84,27 @@ window.onload = function() {
     tile.addEventListener("drop", dragDrop);
     tile.addEventListener("dragend", dragEnd);
 
-    document.getElementById("pieces").append(tile);
+    tilesBoard.append(tile);
   }
-
-  let boardElement = document.getElementById("board");
-  boardElement.style.width = `${80 * columns}px`;
-  boardElement.style.height = `${80 * rows}px`;
 }
+
 
 function dragStart() {
   currTile = this;
 }
 
+/**
+ * 
+ * @param {Event} e 
+ */
 function dragOver(e) {
   e.preventDefault();
 }
 
+/**
+ * 
+ * @param {Event} e 
+ */
 function dragEnter(e) {
   e.preventDefault();
 }
@@ -76,7 +117,6 @@ function dragDrop() {
   otherTile = this;
 }
 
-//bag: with swapping two puzzles, the ids should not be changed!
 function dragEnd() {
   if (currTile.src.includes("blank")) {
     return;
@@ -91,8 +131,7 @@ function dragEnd() {
   otherTile.src = currImg;
   otherTile.id = currId;
 
-  turns += 1;
-  document.getElementById("turns").innerText = turns;
+  document.getElementById("turns").innerText = turns++;
 }
 
 function check() {
@@ -110,9 +149,6 @@ function check() {
       puzzles.push(Number(child.id));
     }
   }
-
-  console.log(solved);
-  console.log(puzzles);
 
   compare(puzzles, solved);
 }
@@ -134,7 +170,7 @@ function compare(puzzles, solved) {
     }
   }
 
-  if (isSolved === false) {
+  if (isSolved === false || puzzles.length === 0) {
     message.innerText = "You are wrong :(";
     message.style.color = "red";
     message.id = "congrats";
@@ -150,3 +186,4 @@ function compare(puzzles, solved) {
     document.getElementById("turns").append(message);
   }
 }
+
