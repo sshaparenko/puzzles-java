@@ -13,7 +13,7 @@
   <br>
   <button id="submit" onclick="check()">Submit</button>
   <form id="send-form" action="/api/v1/upload" method="post" enctype="multipart/form-data">
-    <label for="image">Upload your image here. 10 MB maximum size!</label>
+    <label for="image" style="color: red">Upload your image here! 10 MB maximum size!</label>
     <input id="image" name="image" type="file"/>
     <button>Upload</button>
   </form>
