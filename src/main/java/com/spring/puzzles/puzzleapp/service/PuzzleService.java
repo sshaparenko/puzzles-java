@@ -34,7 +34,7 @@ public class PuzzleService {
         }
     }
 
-    public void setImage(String filename) throws IOException {
+    public void setImage(String filename, String dirPath) throws IOException {
         File file = new File(dirPath, filename);
         image = ImageIO.read(file);
     }
@@ -55,7 +55,7 @@ public class PuzzleService {
         return puzzles;
     }
 
-    public String savePuzzles(int rows, int cols, String filename) throws IOException {
+    public String savePuzzles(int rows, int cols, String filename, String dirPath) throws IOException {
         BufferedImage[] puzzles = split(rows, cols);
 
         Map<Integer, String> puzzleMap = new HashMap<>();

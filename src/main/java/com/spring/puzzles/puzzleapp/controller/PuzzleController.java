@@ -32,8 +32,9 @@ public class PuzzleController {
     @GetMapping("/puzzle")
     public ResponseEntity<ApiResponse> getPuzzle (@RequestParam Integer rows, @RequestParam Integer columns, @RequestParam String filename) {
         try {
-            puzzleService.setImage(filename);
-            String json = puzzleService.savePuzzles(rows, columns, filename);
+            String dirPath = "src/main/resources/static/images/";
+            puzzleService.setImage(filename, dirPath);
+            String json = puzzleService.savePuzzles(rows, columns, filename, dirPath);
             return new ResponseEntity<>(new ApiResponse(true, json), HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(new ApiResponse(false, "The IO Exception has been occurred!"), HttpStatus.INTERNAL_SERVER_ERROR);
