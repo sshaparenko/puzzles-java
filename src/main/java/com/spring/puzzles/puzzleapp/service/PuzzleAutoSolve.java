@@ -170,7 +170,7 @@ public class PuzzleAutoSolve {
      * @param original       original image, that should be compared with the generated one
      * @return percentage of difference
      */
-    public double getDifference(BufferedImage imageToCompare, BufferedImage original, int row, int col) {
+    private double getDifference(BufferedImage imageToCompare, BufferedImage original, int row, int col) {
         int width1 = imageToCompare.getWidth();
         int height1 = imageToCompare.getHeight();
 
