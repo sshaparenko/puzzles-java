@@ -19,6 +19,11 @@ public class PuzzleService {
     private BufferedImage image;
     private String dirPath = "src/main/resources/static/images/";
 
+    /**
+     *
+     * Saves the image to the resources
+     * @param image image to be saved
+     */
     public void saveImage(MultipartFile image) {
         try{
             InputStream stream = image.getInputStream();
@@ -30,11 +35,22 @@ public class PuzzleService {
         }
     }
 
-    public void setImage(String filename, String dirPath) throws IOException {
+    public void setImage(String filename) throws IOException {
         File file = new File(dirPath, filename);
         image = ImageIO.read(file);
     }
 
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    /**
+     *
+     * Splits the image, that was saved, into puzzles and returns them
+     * @param rows number of rows
+     * @param cols number of columns
+     * @return array of BufferedImages
+     */
     private BufferedImage[] split(int rows, int cols) {
         int puzzleWidth = image.getWidth() / cols;
         int puzzleHeight = image.getHeight() / rows;
@@ -51,7 +67,15 @@ public class PuzzleService {
         return puzzles;
     }
 
-    public String savePuzzles(int rows, int cols, String filename, String dirPath) throws IOException {
+    /**
+     *
+     * @param rows number of rows
+     * @param cols number of columns
+     * @param filename name of the image that was saved
+     * @return json string of Index, Filename pair
+     * @throws IOException
+     */
+    public String savePuzzles(int rows, int cols, String filename) throws IOException {
         BufferedImage[] puzzles = split(rows, cols);
 
         Map<Integer, String> puzzleMap = new HashMap<>();

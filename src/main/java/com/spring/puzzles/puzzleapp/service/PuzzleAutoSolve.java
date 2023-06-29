@@ -1,5 +1,7 @@
 package com.spring.puzzles.puzzleapp.service;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +13,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@Getter
+@Setter
 @Slf4j
 public class PuzzleAutoSolve {
-
+    private String puzzlesDir = "src/main/resources/static/images/puzzles/";
+    private String imagesDir = "src/main/resources/static/images/";
     /**
      * @param originalImageName name of the original image
      * @return InputStream of bytes of the result image
@@ -22,14 +27,14 @@ public class PuzzleAutoSolve {
     public InputStream solve(String originalImageName) throws IOException {
         log.info("Solving process has started...");
 
-        LinkedList<BufferedImage> filesList = getFiles("src/main/resources/static/images/puzzles/" + originalImageName.split("\\.")[0]);
+        LinkedList<BufferedImage> filesList = getFiles(puzzlesDir + originalImageName.split("\\.")[0]);
 
         if (filesList.size() == 0) {
             log.warn("No files were found! Try to generate them on /api/v1/puzzle");
             throw new IOException();
         }
 
-        File origialImageFile = new File("src/main/resources/static/images/" + originalImageName);
+        File origialImageFile = new File(imagesDir + originalImageName);
         BufferedImage originalImage = ImageIO.read(origialImageFile);
 
         int puzzleHeight = filesList.get(0).getHeight();

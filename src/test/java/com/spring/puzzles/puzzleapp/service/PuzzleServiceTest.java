@@ -55,7 +55,8 @@ class PuzzleServiceTest {
     @Test
     void setImage() {
         try {
-            puzzleService.setImage(imageName, dirPath);
+            puzzleService.setDirPath(dirPath);
+            puzzleService.setImage(imageName);
             Assertions.assertThat(puzzleService.getImage()).isNotNull();
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,8 +67,9 @@ class PuzzleServiceTest {
     @Test
     void savePuzzles() {
         try {
-            puzzleService.setImage(imageName, dirPath);
-            puzzleService.savePuzzles(2,2, imageName, dirPath);
+            puzzleService.setDirPath(dirPath);
+            puzzleService.setImage(imageName);
+            puzzleService.savePuzzles(2,2, imageName);
             String puzzlesPath = new StringBuilder()
                     .append(dirPath).append("puzzles/")
                     .append(imageName.split("\\.")[0])

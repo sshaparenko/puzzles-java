@@ -50,7 +50,7 @@ class PuzzleControllerTest {
 
     @Test
     void getPuzzle() {
-        ResponseEntity<ApiResponse> response = puzzleController.getPuzzle(5,5,"test");
+        ResponseEntity<ApiResponse> response = puzzleController.getPuzzle(2,2,"test");
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
