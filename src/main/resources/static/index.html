@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css"/>
+  <title>Puzzle App</title>
+</head>
+<body>
+  <div id="board"></div>
+  <h2>Turns <span id="turns">0</span></h2>
+  <div id="pieces"></div>
+  <br>
+  <button id="submit" onclick="check()">Submit</button>
+  <form id="send-form" action="/api/v1/upload" method="post" enctype="multipart/form-data">
+    <label for="image">Upload your image here. 10 MB maximum size!</label>
+    <input id="image" name="image" type="file"/>
+    <button>Upload</button>
+  </form>
+  <button id="load" onclick="loadPuzzle()">Load puzzle</button>
+</body>
+  <script type="text/javascript" src="./js/upload.js"></script>
+  <script type="text/javascript" src="./js/script.js" ></script>
+</html>
