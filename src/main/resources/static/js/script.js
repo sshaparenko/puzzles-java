@@ -7,7 +7,7 @@ var otherTile;
 var turns = 0;
 
 // window.onload = loadBoard();
-window.onload = loadPuzzle();
+//window.onload = loadPuzzle();
 
 function loadBoard() {
   fillBoard();

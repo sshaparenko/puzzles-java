@@ -60,9 +60,9 @@ To run all the tests, execute the `mvn verify` command
 1. Fix all the bags that exist for now
 2. Move the front-end to the React framework, so we can divide the back Spring API
 from front-end and perform calls to API from React
-3. Scale application to maintain multiple users
-   1. Registration and login
-   2. User profile
-   3. Scoreboard for each puzzle
-   4. Add categories like `new`, `popular` and `you last solve`
-   5. Support more image types to be uploaded
+3. Scale application to maintain multiple users 
+4. Add registration and login 
+5. Add user profile 
+6. Add scoreboard for each puzzle 
+7. Add categories like `new`, `popular` and `you last solve`
+8. Support more image types to be uploaded
