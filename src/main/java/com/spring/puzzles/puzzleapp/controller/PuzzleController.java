@@ -3,10 +3,11 @@ package com.spring.puzzles.puzzleapp.controller;
 import com.spring.puzzles.puzzleapp.common.ApiResponse;
 import com.spring.puzzles.puzzleapp.service.PuzzleAutoSolve;
 import com.spring.puzzles.puzzleapp.service.PuzzleService;
+import org.springframework.http.MediaType;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,12 @@ public class PuzzleController {
     private final PuzzleAutoSolve autoSolve;
 
     @PostMapping("/upload")
-    public String uploadImage (@RequestParam MultipartFile image) {
-        if (image.isEmpty()) return "redirect:/no-file.html";
+    public String uploadImage (@RequestParam @NonNull MultipartFile image) {
+        if (image.isEmpty()
+            || image.getContentType() == null
+                || !image.getContentType().equals(MediaType.IMAGE_JPEG_VALUE)) {
+            return "redirect:/no-file.html";
+        }
         puzzleService.saveImage(image);
         return "redirect:/index.html";
     }

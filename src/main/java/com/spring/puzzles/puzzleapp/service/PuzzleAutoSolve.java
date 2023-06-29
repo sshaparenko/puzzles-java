@@ -10,23 +10,6 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * The puzzle auto-solve algorithm.
- * <p>
- * <br/>Class has six methods:
- * <ul>
- *     <li>getDifferance() - calculate the difference
- *     between two images. It is used to compare the
- *     original image with generated image.
- *     </li>
- *     <li></li>
- *     <li></li>
- *     <li></li>
- *     <li></li>
- *     <li></li>
- * </ul>
- */
-
 @Component
 @Slf4j
 public class PuzzleAutoSolve {
@@ -74,9 +57,7 @@ public class PuzzleAutoSolve {
             resultMap.put(min_count, puzzle);
             iterator.remove();
         }
-        System.out.println(resultMap);
         BufferedImage resultImage = createImage(originalImage.getWidth(), originalImage.getHeight(), resultMap);
-        //saveImage(resultImage);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(resultImage, "jpg", outputStream);
         outputStream.flush();
@@ -119,22 +100,6 @@ public class PuzzleAutoSolve {
     }
 
     /**
-     * Save the image to resources
-     *
-     * @param image image to save
-     */
-    private void saveImage(BufferedImage image) {
-        log.info("Saving the result...");
-        try {
-            File outputFile = new File("src/main/resources/", "test.jpg");
-            ImageIO.write(image, "jpg", outputFile);
-            log.info("Result image was saved successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Access images of puzzles in the specified dir and put them into List.
      *
      * @param dirPath path do the directory, where all the puzzles stored
@@ -163,7 +128,7 @@ public class PuzzleAutoSolve {
     }
 
     /**
-     * Calculates the difference between images (original and generated). This difference is used in the solve() method
+     * Calculates the difference between images (puzzle and area of original image). This difference is used in the solve() method
      * in order to find the position of the puzzle.
      *
      * @param imageToCompare generated image, that should be compared with the original

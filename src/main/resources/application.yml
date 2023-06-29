@@ -1,6 +1,9 @@
 spring:
-  mvc:
-    view:
-      prefix: /static/
-      suffix: .html
-      static-path-pattern: /**
+  web:
+    resources:
+      static-path-pattern: /images/**
+      static-locations: file:/your/path/here/src/main/resources/static
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
