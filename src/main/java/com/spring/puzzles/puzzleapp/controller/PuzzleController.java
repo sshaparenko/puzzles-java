@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,8 +48,14 @@ public class PuzzleController {
 
     @GetMapping("/auto-solve")
     @ResponseBody
-    public ResponseEntity<InputStreamResource> autoSolve(@RequestParam String imageName) {
+    public ResponseEntity<InputStreamResource> autoSolve(@RequestParam String imageName, @RequestParam @Nullable Integer threshold, @RequestParam @Nullable Double maxDiff) {
         try {
+            if (threshold != null) {
+                autoSolve.setThreshold(threshold);
+            }
+            if (maxDiff != null) {
+                autoSolve.setMaxDiff(maxDiff);
+            }
             InputStream result = autoSolve.solve(imageName);
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_JPEG)

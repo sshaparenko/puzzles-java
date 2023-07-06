@@ -59,7 +59,7 @@ class PuzzleControllerTest {
         InputStream testStream = new ByteArrayInputStream(new byte[]{1});
         when(puzzleAutoSolve.solve(any(String.class))).thenReturn(testStream);
 
-        ResponseEntity<InputStreamResource> response = puzzleController.autoSolve("test");
+        ResponseEntity<InputStreamResource> response = puzzleController.autoSolve("test", null, null);
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getInputStream()).isEqualTo(testStream);
     }
