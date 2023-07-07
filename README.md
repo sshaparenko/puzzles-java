@@ -28,12 +28,31 @@ a directory with image puzzles (puzzles are not numbered or marked) and return t
 About the original image the algorithm should know nothing accept its width and height.
 
 #### Description of an algorithm
+##### Old Version
 My realization of an algorithm takes as in input the directory with image puzzles and the original
 image too. For each puzzle, the algorithm iterating through the specified areas of the original
 image and calculate the difference between the puzzle and area of image. When the difference between
 image area and puzzle gets minimal, we push the puzzle to the Map with calculated index of the puzzle
 as key, and puzzle itself as value. When all puzzles added to the Map with corresponding indexes, special
 method iterates through the Map and draw a new image. As the result an InputStream gets returned.
+
+##### New version
+The solve() method of the PuzzleAutoSolve class takes the name of the image whose puzzles the algorithm should assemble. The method writes the puzzle files to the LinkedList. It is important to note that the names of the image files will be of the type 0.jpg, 1.jpg, n.jpg, this was done for the correct operation of the web part of the application, the automatic assembly algorithm does not take file names into account. This can be checked by simply changing the names of the puzzle images. Next, the method calculates the width and height of the puzzles and the number of rows and columns of the entire puzzle. Next, each image is contained in a Puzzle type object.
+
+The Puzzle class has 6 fields. An imagePuzzle field for storing an image of type BufferedImage. Top, right, bottom, left fields for storing links to neighboring puzzles in the form of Optional<Puzzle>. The index field contains the index of the puzzle in the overall image. The class has an isCorner() method that checks whether a puzzle is a corner of the image based on the references it has to neighboring puzzles.
+
+Next, the setAdjacentPuzzle() method takes a List<Puzzle>. The method traverses the sheet and for each puzzle, looks for the one next to it and records it in the fields top, right, bottom, left.
+
+Next, the findCorner() method that accepts a List<Puzzle> searches for a puzzle that is a corner of the image and calculates its index.
+
+After that, the dfsTraversal method accepts an object of type Optional<Puzzle>, which was defined as the corner of the image, and makes a detour through all the top, right, bottom, left values, and at each step calculates the index of neighboring puzzles based on the index of the corner puzzle.
+
+The search for a neighboring puzzle is carried out using the methods getTopDifferance, getRightDifferance, getBottomDifferance, getLeftDifferance. They calculate the difference between pixels at the edges of two images. If the calculated difference is acceptable, such puzzles will be considered adjacent.
+
+These methods of calculating the difference have a significant limitation, since the threshold and maxDiff parameters are the criteria for the permissible difference between the edges of the images. Different images will have different values of these parameters, in order to successfully find the edge puzzle, so when sending a request, it is possible to specify query parameters threshold and maxDiff in order to try to find the necessary combination of values. The algorithm best assembles 2X2 and 3X3 puzzles. With an increased number of puzzles, problems may arise.
+
+##### Demonstration of the new Auto-solve algorithm 
+[![Watch the video](https://imgur.com/fLuj2EV.png)](https://youtu.be/G-OSbPe0MRw)
 
 #### How to use
 **Note!** Before using the auto-solve function you should upload your image on the web page via Upload button and get puzzles via Load Puzzle button.
