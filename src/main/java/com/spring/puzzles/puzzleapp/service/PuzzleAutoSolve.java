@@ -34,8 +34,8 @@ public class PuzzleAutoSolve {
     }
 
     /**
-     *
      * This method is utilizing all the methods to solve the puzzles
+     *
      * @param originalImageName name of the original image
      * @return InputStream of bytes of the result image
      * @throws IOException
@@ -43,6 +43,7 @@ public class PuzzleAutoSolve {
     public InputStream solve(String originalImageName) throws IOException {
         log.info("Solving process has started...");
 
+        //reading puzzles files
         LinkedList<BufferedImage> images = getFiles(puzzlesDir + originalImageName.split("\\.")[0]);
         Map<Integer, BufferedImage> resultMap = new HashMap<>();
         List<Puzzle> puzzlesList = new ArrayList<>();
@@ -52,6 +53,7 @@ public class PuzzleAutoSolve {
             throw new IOException();
         }
 
+        //getting necessary information about puzzle rows and columns number and width, height of tiles
         File origialImageFile = new File(imagesDir + originalImageName);
         BufferedImage originalImage = ImageIO.read(origialImageFile);
 
@@ -60,18 +62,25 @@ public class PuzzleAutoSolve {
         int rows = originalImage.getHeight() / puzzleHeight;
         int columns = originalImage.getWidth() / puzzleWidth;
 
+        //wrapping each tile into Puzzle object
         images.forEach(image -> puzzlesList.add(new Puzzle(image)));
 
+        //setting the adjacent tiles for each tile
         setAdjacentPuzzle(puzzlesList, rows, columns);
+
+        //finding the corner tile
         Optional<Puzzle> startingPuzzle = findCorner(puzzlesList, columns);
 
+        //traversing all the tiles to set indexes
         log.info("Starting the traversal process...");
         dfsTraversal(startingPuzzle, columns);
         log.info("Traversal was finished successfully!");
 
+        //collecting images and indexes into resultMap
         visitedPuzzles.forEach(puzzle -> resultMap.put(puzzle.getIndex(), puzzle.getImagePuzzle()));
         visitedPuzzles.clear();
 
+        //drawing an image from tiles in resultMap
         BufferedImage resultImage = createImage(originalImage.getWidth(), originalImage.getHeight(), puzzleWidth, puzzleHeight, resultMap);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(resultImage, "jpg", outputStream);
@@ -84,10 +93,10 @@ public class PuzzleAutoSolve {
     }
 
     /**
-     *
      * Find the corner puzzle and sets index for it based on the number of columns
+     *
      * @param puzzlesList list of puzzles
-     * @param columns number of columns
+     * @param columns     number of columns
      * @return optional of Puzzle object
      */
     private Optional<Puzzle> findCorner(List<Puzzle> puzzlesList, int columns) {
@@ -119,11 +128,11 @@ public class PuzzleAutoSolve {
     }
 
     /**
-     *
      * Based on the calculated differences, set the top, right, bottom, and left adjacent puzzle fpr each puzzle of list
+     *
      * @param puzzlesList list of all puzzles
-     * @param rows number of rows
-     * @param columns number of columns
+     * @param rows        number of rows
+     * @param columns     number of columns
      */
     private void setAdjacentPuzzle(List<Puzzle> puzzlesList, int rows, int columns) {
         log.info("Setting adjacent puzzles...");
@@ -165,10 +174,10 @@ public class PuzzleAutoSolve {
     }
 
     /**
-     *
      * Method is traversing the top, right, bottom, and left puzzles of the specified corner puzzle
+     *
      * @param optionalPuzzle corner puzzle
-     * @param columns number of puzzle
+     * @param columns        number of puzzle
      */
     private void dfsTraversal(Optional<Puzzle> optionalPuzzle, int columns) {
         if (optionalPuzzle.isEmpty() || visitedPuzzles.contains(optionalPuzzle.get())) {
@@ -197,7 +206,6 @@ public class PuzzleAutoSolve {
             dfsTraversal(leftPuzzle, columns);
         }
     }
-
 
     /**
      * Generates the result image from puzzles dictionary (index, puzzle)
@@ -317,5 +325,4 @@ public class PuzzleAutoSolve {
     private double getRightDifferance(BufferedImage firstPuzzle, BufferedImage secondPuzzle) {
         return getLeftRightDifferance(firstPuzzle, secondPuzzle, firstPuzzle.getWidth() - 1, 0);
     }
-
 }
